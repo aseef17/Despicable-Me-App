@@ -25,110 +25,112 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen>
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-        body: Stack(
-      fit: StackFit.expand,
-      children: <Widget>[
-        Hero(
-          tag: "background-${widget.character.name}",
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-              colors: widget.character.colors,
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-            )),
-          ),
-        ),
-        SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              SizedBox(height: screenHeight * 0.05),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: screenHeight * 0.0001, left: screenWidth * 0.005),
-                child: IconButton(
-                    icon: Icon(Icons.close),
-                    iconSize: screenHeight * 0.06,
-                    color: Colors.white.withOpacity(0.9),
-                    onPressed: () {
-                      setState(() {
-                        bottomSheetPosition =
-                            widget._completeCollapsedBottomSheet;
-                      });
-                      Navigator.pop(context);
-                    }),
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Hero(
-                  tag: "image-${widget.character.name}",
-                  child: Image.asset(widget.character.imagePath,
-                      height: screenHeight * 0.45),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.05,
-                    vertical: screenHeight * 0.01),
-                child: Hero(
-                  tag: "name-${widget.character.name}",
-                  child: Material(
-                      color: Colors.transparent,
-                      child:
-                          Text(widget.character.name, style: AppTheme.heading)),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(screenWidth * 0.05, 0,
-                    screenWidth * 0.025, screenHeight * 0.10),
-                child: Text(widget.character.description,
-                    style: AppTheme.subHeading),
-              )
-            ],
-          ),
-        ),
-        AnimatedPositioned(
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.decelerate,
-          bottom: bottomSheetPosition,
-          left: 0,
-          right: 0,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(screenWidth * 0.1),
-                topRight: Radius.circular(screenWidth * 0.1),
-              ),
+    return WillPopScope(
+      child: Scaffold(
+          body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Hero(
+            tag: "background-${widget.character.name}",
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                colors: widget.character.colors,
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+              )),
             ),
+          ),
+          SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                InkWell(
-                  onTap: _onTap,
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: screenWidth * 0.075),
-                    height: Platform.isAndroid ? screenHeight * 0.12 : 80,
-                    child: Text(
-                      "Clips",
-                      style: AppTheme.subHeading.copyWith(color: Colors.black),
-                    ),
+                SizedBox(height: screenHeight * 0.05),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: screenHeight * 0.0001, left: screenWidth * 0.005),
+                  child: IconButton(
+                      icon: Icon(Icons.close),
+                      iconSize: screenHeight * 0.06,
+                      color: Colors.white.withOpacity(0.9),
+                      onPressed: () {
+                        _willPop();
+                      }),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Hero(
+                    tag: "image-${widget.character.name}",
+                    child: Image.asset(widget.character.imagePath,
+                        height: screenHeight * 0.45),
                   ),
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: _clipsWidget(context),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.05,
+                      vertical: screenHeight * 0.01),
+                  child: Hero(
+                    tag: "name-${widget.character.name}",
+                    child: Material(
+                        color: Colors.transparent,
+                        child: Text(widget.character.name,
+                            style: AppTheme.heading)),
+                  ),
                 ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(screenWidth * 0.05, 0,
+                      screenWidth * 0.025, screenHeight * 0.10),
+                  child: Text(widget.character.description,
+                      style: AppTheme.subHeading),
+                )
               ],
             ),
           ),
-        ),
-      ],
-    ));
+          AnimatedPositioned(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.decelerate,
+            bottom: bottomSheetPosition,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(screenWidth * 0.1),
+                  topRight: Radius.circular(screenWidth * 0.1),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  InkWell(
+                    onTap: _onTap,
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: screenWidth * 0.075),
+                      height: Platform.isAndroid ? screenHeight * 0.12 : 80,
+                      child: Text(
+                        "Clips",
+                        style:
+                            AppTheme.subHeading.copyWith(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: _clipsWidget(context),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      )),
+      onWillPop: () {
+        return new Future(() => _willPop());
+      }
+    );
   }
 
   _onTap() {
@@ -138,6 +140,15 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen>
           : widget._collapsedBottomSheet;
 
       isCollapsed = !isCollapsed;
+    });
+  }
+
+  _willPop() {
+    setState(() {
+      bottomSheetPosition = widget._completeCollapsedBottomSheet;
+    });
+    Future.delayed(const Duration(milliseconds: 250), () {
+      Navigator.pop(context);
     });
   }
 
