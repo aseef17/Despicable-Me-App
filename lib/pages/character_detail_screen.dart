@@ -2,6 +2,7 @@ import 'package:after_layout/after_layout.dart';
 import 'package:despicable_me_app/models/character.dart';
 import 'package:despicable_me_app/styleguide.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
 class CharacterDetailScreen extends StatefulWidget {
   final Character character;
@@ -111,7 +112,7 @@ class _CharacterDetailScreenState extends State<CharacterDetailScreen>
                     alignment: Alignment.centerLeft,
                     padding:
                         EdgeInsets.symmetric(horizontal: screenWidth * 0.075),
-                    height: screenHeight * 0.12,
+                    height: Platform.isAndroid ? screenHeight * 0.12 : 80,
                     child: Text(
                       "Clips",
                       style: AppTheme.subHeading.copyWith(color: Colors.black),
@@ -156,38 +157,38 @@ Widget _clipsWidget(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
 
   return Container(
-    height: screenHeight * 0.37,
+    height: Platform.isAndroid ? screenHeight * 0.37 : 250,
     margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
     child: Row(
       children: <Widget>[
         Column(
           children: <Widget>[
             roundedContainer(Colors.redAccent),
-            SizedBox(height: screenWidth * 0.035),
+            SizedBox(height: Platform.isAndroid ? screenWidth * 0.035 : 20),
             roundedContainer(Colors.greenAccent),
           ],
         ),
-        SizedBox(width: screenWidth * 0.035),
+        SizedBox(width: Platform.isAndroid ? screenWidth * 0.035 : 16),
         Column(
           children: <Widget>[
             roundedContainer(Colors.orangeAccent),
-            SizedBox(height: screenWidth * 0.035),
+            SizedBox(height: Platform.isAndroid ? screenWidth * 0.035 : 20),
             roundedContainer(Colors.purple),
           ],
         ),
-        SizedBox(width: screenWidth * 0.035),
+        SizedBox(width: Platform.isAndroid ? screenWidth * 0.035 : 16),
         Column(
           children: <Widget>[
             roundedContainer(Colors.grey),
-            SizedBox(height: screenWidth * 0.035),
+            SizedBox(height: Platform.isAndroid ? screenWidth * 0.035 : 20),
             roundedContainer(Colors.blueGrey),
           ],
         ),
-        SizedBox(width: screenWidth * 0.035),
+        SizedBox(width: Platform.isAndroid ? screenWidth * 0.035 : 16),
         Column(
           children: <Widget>[
             roundedContainer(Colors.lightGreenAccent),
-            SizedBox(height: screenWidth * 0.035),
+            SizedBox(height: Platform.isAndroid ? screenWidth * 0.035 : 20),
             roundedContainer(Colors.pinkAccent),
           ],
         ),
